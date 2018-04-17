@@ -8,13 +8,15 @@ Minimal portfolio site.
 
 
 
-*User login
-*Full design/layout customization
-*Portfolio item management
+* User login
 
-#Installation
+Full design/layout customization
+
+Portfolio item management
+
+## Installation
 
 
 
-Tests
---
+## Tests
+
