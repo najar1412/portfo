@@ -31,7 +31,7 @@ def new_image(session, filename=None, name=None, caption=None, date=None, featur
 
 
 def delete_image_from_server(filename):
-    # os.remove(os.path.join(Config.UPLOAD_PATH, filename))
+    os.remove(os.path.join(Config.UPLOAD_PATH, filename))
     pass
 
 
