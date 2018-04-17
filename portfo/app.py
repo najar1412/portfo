@@ -24,8 +24,8 @@ def load_user(id):
 
 def new_image(session, filename=None, name=None, caption=None, date=None, featured=False, private=True):
     image = model.Image(name=str(name), caption=str(caption), date=str(date), featured=featured, filename=str(filename), private=private)
-    session.add(image)
-    session.commit()
+    session.session.add(image)
+    session.session.commit()
 
     return image
 
@@ -126,7 +126,7 @@ def db_edit_folio(session, id, dto_folio):
     if 'folio_caption' in dto_folio and dto_folio['folio_caption'] and dto_folio['folio_caption'] != '':
         folio.caption = dto_folio['folio_caption']
     
-    session.commit()
+    session.session.commit()
 
     return folio
 
@@ -141,9 +141,9 @@ def register():
         user = model.User(username=form.username.data, email=form.email.data)
         folio = model.Folio(title='Portfo', caption='contact\ncontact\ncontact')
         user.set_password(form.password.data)
-        flaskapp.db.add(user)
-        flaskapp.db.add(folio)
-        flaskapp.db.commit()
+        flaskapp.db.session.add(user)
+        flaskapp.db.session.add(folio)
+        flaskapp.db.session.commit()
 
         flash('Congratulations, you are now a registered user!')
 
@@ -204,7 +204,7 @@ def upload():
     if form.validate_on_submit() and 'photo' in request.files:
         for f in request.files.getlist('photo'):
             filename = secure_filename(f.filename)
-            f.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+            f.save(os.path.join(flaskapp.app.config['UPLOAD_PATH'], filename))
             new_image(flaskapp.db, filename=filename)
         return 'Upload completed.'
 

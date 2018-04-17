@@ -96,43 +96,42 @@ Caption: <br>
         {% for id, data in images.items() %}
         {% if data.private == False %}
         
-          <div style="display:flex; background-color:rgba(0, 0, 0, .1); border-radius: 25px;overflow:hidden;">
-          <div>
-            <img style="width:300px;height:auto;" src="/static/img/{{data.filename}}">
-        </div>
-        <div style="padding-left: 15px;">
-            <form action="/admin/edit/{{id}}" method='POST'>
-                private: {{data.private}}<br>
-                <input type="radio" id="privChoice1"
-                 name="image_private" value="False">
-                <label for="privChoice1">No</label>
-            
-                <input type="radio" id="privChoice2"
-                 name="image_private" value="True">
-                <label for="privChoice2">Yes</label>
-                <br>
-            image name <br>
-            <input type=text name="image_name" placeholder="{{data.name}}"><br>
-            pub date<br>
-            <input type=text name="image_date" placeholder="{{data.date}}"><br>
-            caption<br>
-            <input type=text name="image_caption" placeholder="{{data.caption}}"><br>
-            featured: {{data.featured}}<br>
-            <input type="radio" id="favChoice1"
-             name="image_featured" value="False">
-            <label for="favChoice1">No</label>
-        
-            <input type="radio" id="favChoice2"
-             name="image_featured" value="True">
-            <label for="favChoice2">Yes</label>
-            <br>
-        
-            <button type="submit">Update</button> | <button>Public</button>
-            <hr>
-            <button>Delete</button>
-        </form>
-        </div>
-    </div>
+        <div style="display:flex; background-color:rgba(0, 0, 0, .1); margin-right:20px;border-radius: 25px;overflow:hidden;">
+  
+            <div>
+              <img style="width:300px;height:auto;" src="/static/uploads/{{data.filename}}">
+          </div>
+          
+          <div style="padding-left: 15px;">
+              <form action="/admin/edit/{{data.id}}" method='POST'>
+                  Make this image public?<br>
+                  <input type="radio" id="privChoice1"
+                   name="image_private" value="False">
+                  <label for="privChoice1">Yes</label>
+              
+                  <input type="radio" id="privChoice2"
+                   name="image_private" value="True">
+                  <label for="privChoice2">No</label>
+                  <br>
+              image name <br>
+              <input type=text name="image_name" placeholder="{{data.name}}"><br>
+              pub date<br>
+              <input type=text name="image_date" placeholder="{{data.date}}"><br>
+              caption<br>
+              <input type=text name="image_caption" placeholder="{{data.caption}}"><br>
+              featured: {{data.featured}}<br>
+              <input type="radio" id="favChoice1"name="image_featured" value="False">
+              <label for="favChoice1">No</label>
+          
+              <input type="radio" id="favChoice2" name="image_featured" value="True">
+              <label for="favChoice2">Yes</label>
+              <br>
+          
+              <button type="submit">Update</button> | <button name=delete_image value='True'>Delete</button>
+              
+          </form>
+          </div>
+          </div>
         
         <br>
         
