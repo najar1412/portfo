@@ -11,3 +11,10 @@ Features
 *User login
 *Full design/layout customization
 *Portfolio item management
+
+Installation
+--
+
+
+Tests
+--
