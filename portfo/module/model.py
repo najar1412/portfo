@@ -56,6 +56,8 @@ class Folio(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String())
     caption = db.Column(db.String())
+    enable_title = db.Column(db.Boolean(), default=True)
+    enable_caption = db.Column(db.Boolean(), default=True)
 
 
 db.create_all()

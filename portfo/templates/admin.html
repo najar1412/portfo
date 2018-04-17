@@ -7,32 +7,67 @@
         <h2 class="display-4">{{session.portfo_title}}: admin</h2>
    </div>
 
-   <p style="height:100px;"></p>
+   <p style="height:60px;"></p>
 
    <div style="padding: 50px;">
    <a href="/">Home</a>
    <a href="{{ url_for('logout') }}">Logout</a>
 
-   <p style="height:30px;"></p>
-   <hr>
-   <p style="height:30px;"></p>
+   <p style="height:60px;"></p>
    
+   <h1 class="display-6">
+        Global Settings
+   </h1>
 
-   <form action="/upload" method="POST" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
-    {{ form.photo(multiple="multiple") }}
-    {{ form.submit }}
-</form>
-<br>
-
+  <div class="card">
+    <div class="card-body">
    <form action="/admin/edit/folio/1" method='POST'>
+    <div style="display: inline-block">
 Title: <br>
-<input type=text name="folio_title" placeholder="{{session.portfo_title}}"><button type=submit>update</button><br>
+<input type=text name="folio_title" placeholder="{{session.portfo_title}}">&emsp;&emsp;
+
+<input type="checkbox" class="form-check-input" id="exampleCheck1">
+<label class="form-check-label" for="exampleCheck1">Enable Site Caption?</label>
+
+</div>
+<br>
+<br>
+<div style="display: inline-block">
+Caption: <br>
+<input type=text name="folio_caption" placeholder="{{session.portfo_caption}}">&emsp;&emsp;
+
+
+<input type="checkbox" class="form-check-input" id="exampleCheck1">
+<label class="form-check-label" for="exampleCheck1">Enable Site Title?</label>
+
+<br>
 <br>
 
-Caption: <br>
-<input type=text name="folio_caption" placeholder="{{session.portfo_caption}}"><button type=submit>update</button>
+<button type=submit>update</button>
+</div>
 </form>
+
+</div>
+</div>
+<p style="height:30px;"></p>
+<h1 class="display-6">
+    Upload Images
+</h1>
+
+
+   <div class="card">
+    <div class="card-body">
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {{ form.photo(multiple="multiple") }}
+            {{ form.submit }}
+        </form>
+    </div>
+  </div>
+
+  <p style="height:30px;"></p>
+
+
 <p style="height:40px;"></p>
 
 <div style="display:flex;">
@@ -85,10 +120,6 @@ Caption: <br>
 {% endif %}
 {% endfor %}
 </div>
-
-
-
-
 
 <div style="width:50%;">
         <h2 class="display-4">Public Images</h2>
