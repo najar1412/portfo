@@ -3,9 +3,10 @@ import os
 from flask import Flask, render_template, redirect, request, session, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
+from werkzeug.utils import secure_filename
 
 from module import model
-from forms import LoginForm, RegistrationForm
+from forms import LoginForm, RegistrationForm, UploadForm
 from config import Config
 
 
@@ -185,15 +186,28 @@ def index():
 @app.route('/admin')
 @login_required
 def admin():
+    form = UploadForm()
     images = get_images()
 
-    return render_template('admin.html', images=images)
+    return render_template('admin.html', images=images, form=form)
 
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     print('testing test')
     return redirect('/')
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    form = UploadForm()
+    if form.validate_on_submit() and 'photo' in request.files:
+        for f in request.files.getlist('photo'):
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+        return 'Upload completed.'
+
+    return render_template('upload.html', form=form)
 
 
 @app.route('/admin/edit/<int:id>', methods=['GET', 'POST'])
@@ -207,8 +221,6 @@ def admin_edit_image(id):
 @app.route('/admin/edit/folio/<int:id>', methods=['GET', 'POST'])
 def admin_edit_folio(id):
     form = request.form
-    print(form)
-    # db_edit_image(db, id, form)
     db_edit_folio(db, id, form)
 
     return redirect('/admin')

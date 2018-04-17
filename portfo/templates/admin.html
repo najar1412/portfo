@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
+
+
 <div style="position:fixed;z-index:100;top:0;background: rgba(255, 255, 255, .8);margin:auto; padding-right: 30px; padding-left:30px; padding-top:15px;padding-bottom:15px; margin:20px;">
         <h2 class="display-4">{{session.portfo_title}}: admin</h2>
    </div>
@@ -15,6 +17,14 @@
    <hr>
    <p style="height:30px;"></p>
    
+
+   <form action="/upload" method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.photo(multiple="multiple") }}
+    {{ form.submit }}
+</form>
+<br>
+
    <form action="/admin/edit/folio/1" method='POST'>
 Title: <br>
 <input type=text name="folio_title" placeholder="{{session.portfo_title}}"><button type=submit>update</button><br>

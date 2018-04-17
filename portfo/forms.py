@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 from module import model
 
@@ -20,12 +21,21 @@ class RegistrationForm(FlaskForm):
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
 
+
     def validate_username(self, username):
         user = model.User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Please use a different username.')
 
+
     def validate_email(self, email):
         user = model.User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+
+class UploadForm(FlaskForm):
+    photo = FileField('Image', validators=[
+        FileRequired()
+    ])
+    submit = SubmitField('Submit')
