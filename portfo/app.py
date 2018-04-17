@@ -125,17 +125,43 @@ def db_edit_image(session, id, dto_image):
     return image
 
 
-def db_edit_folio(session, id, dto_folio):
+def db_edit_folio(s, id, dto_folio):
     folio = folio_by_id(id)
+    print(dto_folio)
 
     if 'folio_title' in dto_folio and dto_folio['folio_title'] and dto_folio['folio_title'] != '':
         folio.title = dto_folio['folio_title']
     if 'folio_caption' in dto_folio and dto_folio['folio_caption'] and dto_folio['folio_caption'] != '':
         folio.caption = dto_folio['folio_caption']
+    if 'folio_title_enable' in dto_folio and dto_folio['folio_title_enable'] == 'True':
+        if folio.enable_title == False:
+            folio.enable_title = True
+            session['portfo_title_enable'] = True
+        else:
+            folio.enable_title = False
+            session['portfo_title_enable'] = False
+        
+
+    if 'folio_caption_enable' in dto_folio and dto_folio['folio_caption_enable'] == 'True':
+        if folio.enable_caption == False:
+            folio.enable_caption = True
+            session['portfo_caption_enable'] = True
+        else:
+            folio.enable_caption = False
+            session['portfo_caption_enable'] = False
     
-    session.session.commit()
+    s.session.commit()
 
     return folio
+
+
+def portfo_cookie(session, portfo_title, portfo_caption, portfo_title_enable, portfo_caption_enable):
+    session['portfo_title'] = portfo_title
+    session['portfo_caption'] = portfo_caption
+    session['portfo_title_enable'] = portfo_title_enable
+    session['portfo_caption_enable'] = portfo_caption_enable
+
+    return session
 
 
 @flaskapp.app.route('/register', methods=['GET', 'POST'])
@@ -146,11 +172,14 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         user = model.User(username=form.username.data, email=form.email.data)
-        folio = model.Folio(title='Portfo', caption='contact\ncontact\ncontact')
         user.set_password(form.password.data)
+
+        folio = model.Folio()
         flaskapp.db.session.add(user)
         flaskapp.db.session.add(folio)
         flaskapp.db.session.commit()
+
+        portfo_cookie(session, folio.title, folio.caption, folio.enable_title, folio.enable_caption)
 
         flash('Congratulations, you are now a registered user!')
 

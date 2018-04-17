@@ -54,8 +54,8 @@ class Image(db.Model):
 
 class Folio(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String())
-    caption = db.Column(db.String())
+    title = db.Column(db.String(), default="portfo v0.1.0")
+    caption = db.Column(db.String(), default="Add a new caption!")
     enable_title = db.Column(db.Boolean(), default=True)
     enable_caption = db.Column(db.Boolean(), default=True)
 

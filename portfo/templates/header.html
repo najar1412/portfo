@@ -1,9 +1,12 @@
+{% if session.portfo_title_enable == True %}
 <div style="position:fixed;z-index:100;top:0;background: rgba(255, 255, 255, .8);margin:auto; padding-right: 30px; padding-left:30px; padding-top:15px;padding-bottom:15px; margin:20px;">
         <h2 class="display-4">{{session.portfo_title}}</h2>
    </div>
-   
+  {% endif %}
+  {% if session.portfo_caption_enable == True %}
    <div style="position:absolute;z-index:90;top:130px;background: rgba(255, 255, 255, .6);margin:auto; padding-right: 30px; padding-left:30px; padding-top:15px;padding-bottom:15px; margin:20px;">
      <small>  
      {{session.portfo_caption}}
      </small>
    </div>
+   {% endif %}
