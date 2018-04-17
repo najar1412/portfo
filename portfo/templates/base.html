@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+        <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    <body style="border:0;margin:0;">
+
+
+
+
+{% block content %}
+{% endblock %}
+
+
+        <script>
+
+            // external js: masonry.pkgd.js, imagesloaded.pkgd.js
+            
+            // init Masonry
+            var grid = document.querySelector('.grid');
+            
+            var msnry = new Masonry( grid, {
+              itemSelector: '.grid-item',
+              columnWidth: '.grid-sizer',
+              percentPosition: true
+            });
+            
+            imagesLoaded( grid ).on( 'progress', function() {
+              // layout Masonry after each image loads
+              msnry.layout();
+            });
+            
+            
+            </script>
+
+    </body>
+</html>

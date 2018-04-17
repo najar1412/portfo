@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="position:fixed;z-index:100;top:0;background: rgba(255, 255, 255, .8);margin:auto; padding-right: 30px; padding-left:30px; padding-top:15px;padding-bottom:15px; margin:20px;">
+        <h2 class="display-4">portfo: admin</h2>
+   </div>
+
+   <p style="height:100px;"></p>
+
+   <div style="padding: 50px;">
+   <a href="/">Home</a>
+   <a href="{{ url_for('logout') }}">Logout</a>
+
+   <p style="height:30px;"></p>
+   <hr>
+   <p style="height:30px;"></p>
+   
+
+Title: <br>
+<input type=text placeholder="{{session.portfo_title}}"><button type=submit>update</button><br>
+<br>
+
+Caption: <br>
+<input type=text><button type=submit>update</button>
+
+<p style="height:40px;"></p>
+
+<div style="display:flex;">
+
+
+        <div style="width:50%;">
+                <h2 class="display-4">Private Images</h2>
+  <br>
+{% for id, data in images.items() %}
+{% if data.private == True %}
+
+<div style="display:flex; background-color:rgba(0, 0, 0, .1); margin-right:20px;border-radius: 25px;overflow:hidden;">
+  
+  <div>
+    <img style="width:300px;height:auto;" src="/static/img/{{data.filename}}">
+</div>
+
+{{data}}
+
+<div style="padding-left: 15px;">
+    <form action="/admin/edit/{{data.id}}" method='POST'>
+        private: {{data.private}}<br>
+        <input type="radio" id="privChoice1"
+         name="image_private" value="False">
+        <label for="privChoice1">No</label>
+    
+        <input type="radio" id="privChoice2"
+         name="image_private" value="True">
+        <label for="privChoice2">Yes</label>
+        <br>
+    image name <br>
+    <input type=text name="image_name" placeholder="{{data.name}}"><br>
+    pub date<br>
+    <input type=text name="image_date" placeholder="{{data.date}}"><br>
+    caption<br>
+    <input type=text name="image_caption" placeholder="{{data.caption}}"><br>
+    featured: {{data.featured}}<br>
+    <input type="radio" id="favChoice1"name="image_featured" value="False">
+    <label for="favChoice1">No</label>
+
+    <input type="radio" id="favChoice2" name="image_featured" value="True">
+    <label for="favChoice2">Yes</label>
+    <br>
+
+    <button type="submit">Update</button> | <button>Public</button>
+    <hr>
+    <button>Delete</button>
+</form>
+</div>
+</div>
+<br>
+
+{% endif %}
+{% endfor %}
+</div>
+
+
+
+
+
+<div style="width:50%;">
+        <h2 class="display-4">Public Images</h2>
+    <br>
+        {% for id, data in images.items() %}
+        {% if data.private == False %}
+        
+          <div style="display:flex; background-color:rgba(0, 0, 0, .1); border-radius: 25px;overflow:hidden;">
+          <div>
+            <img style="width:300px;height:auto;" src="/static/img/{{data.filename}}">
+        </div>
+        <div style="padding-left: 15px;">
+            <form action="/admin/edit/{{id}}" method='POST'>
+                private: {{data.private}}<br>
+                <input type="radio" id="privChoice1"
+                 name="image_private" value="False">
+                <label for="privChoice1">No</label>
+            
+                <input type="radio" id="privChoice2"
+                 name="image_private" value="True">
+                <label for="privChoice2">Yes</label>
+                <br>
+            image name <br>
+            <input type=text name="image_name" placeholder="{{data.name}}"><br>
+            pub date<br>
+            <input type=text name="image_date" placeholder="{{data.date}}"><br>
+            caption<br>
+            <input type=text name="image_caption" placeholder="{{data.caption}}"><br>
+            featured: {{data.featured}}<br>
+            <input type="radio" id="favChoice1"
+             name="image_featured" value="False">
+            <label for="favChoice1">No</label>
+        
+            <input type="radio" id="favChoice2"
+             name="image_featured" value="True">
+            <label for="favChoice2">Yes</label>
+            <br>
+        
+            <button type="submit">Update</button> | <button>Public</button>
+            <hr>
+            <button>Delete</button>
+        </form>
+        </div>
+    </div>
+        
+        <br>
+        
+        {% endif %}
+        {% endfor %}
+        </div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+</div>
+{% endblock %}
