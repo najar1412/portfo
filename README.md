@@ -12,8 +12,8 @@ Features
 *Full design/layout customization
 *Portfolio item management
 
-Installation
---
+#Installation
+
 
 
 Tests
