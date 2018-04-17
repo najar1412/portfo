@@ -79,6 +79,10 @@ def image_by_id(Image, id):
     return Image.query.filter_by(id=id).first()
 
 
+def folio_by_id(id):
+    return model.Folio.query.filter_by(id=id).first()
+
+
 def db_edit_image(db, id, dto_image):
     image = image_by_id(model.Image, id)
 
@@ -106,6 +110,19 @@ def db_edit_image(db, id, dto_image):
     return image
 
 
+def db_edit_folio(db, id, dto_folio):
+    folio = folio_by_id(id)
+
+    if 'folio_title' in dto_folio and dto_folio['folio_title'] and dto_folio['folio_title'] != '':
+        folio.title = dto_folio['folio_title']
+    if 'folio_caption' in dto_folio and dto_folio['folio_caption'] and dto_folio['folio_caption'] != '':
+        folio.caption = dto_folio['folio_caption']
+    
+    db.session.commit()
+
+    return folio
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -114,11 +131,15 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         user = model.User(username=form.username.data, email=form.email.data)
+        folio = model.Folio(title='Portfo', caption='contact\ncontact\ncontact')
         user.set_password(form.password.data)
         db.session.add(user)
+        db.session.add(folio)
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
+
         return redirect(url_for('login'))
+
     return render_template('register.html', title='Register', form=form)
 
 
@@ -136,7 +157,6 @@ def login():
             return redirect(url_for('login'))
 
         login_user(user, remember=form.remember_me.data)
-
         return redirect(url_for('admin'))
 
     return render_template('login.html', title='Sign In', form=form)
@@ -151,8 +171,10 @@ def logout():
 
 @app.route('/')
 def index():
-    session['portfo_title'] = Config.title
     # build_tmp_images(db)
+    folio = model.Folio.query.filter_by(id=1).first()
+    session['portfo_title'] = folio.title
+    session['portfo_caption'] = folio.caption
     
     images = get_images(private=False)
     # images = {}
@@ -178,6 +200,16 @@ def test():
 def admin_edit_image(id):
     form = request.form
     db_edit_image(db, id, form)
+
+    return redirect('/admin')
+
+
+@app.route('/admin/edit/folio/<int:id>', methods=['GET', 'POST'])
+def admin_edit_folio(id):
+    form = request.form
+    print(form)
+    # db_edit_image(db, id, form)
+    db_edit_folio(db, id, form)
 
     return redirect('/admin')
 

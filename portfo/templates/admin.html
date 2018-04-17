@@ -2,7 +2,7 @@
 {% block content %}
 
 <div style="position:fixed;z-index:100;top:0;background: rgba(255, 255, 255, .8);margin:auto; padding-right: 30px; padding-left:30px; padding-top:15px;padding-bottom:15px; margin:20px;">
-        <h2 class="display-4">portfo: admin</h2>
+        <h2 class="display-4">{{session.portfo_title}}: admin</h2>
    </div>
 
    <p style="height:100px;"></p>
@@ -15,14 +15,14 @@
    <hr>
    <p style="height:30px;"></p>
    
-
+   <form action="/admin/edit/folio/1" method='POST'>
 Title: <br>
-<input type=text placeholder="{{session.portfo_title}}"><button type=submit>update</button><br>
+<input type=text name="folio_title" placeholder="{{session.portfo_title}}"><button type=submit>update</button><br>
 <br>
 
 Caption: <br>
-<input type=text><button type=submit>update</button>
-
+<input type=text name="folio_caption" placeholder="{{session.portfo_caption}}"><button type=submit>update</button>
+</form>
 <p style="height:40px;"></p>
 
 <div style="display:flex;">
@@ -40,11 +40,9 @@ Caption: <br>
     <img style="width:300px;height:auto;" src="/static/img/{{data.filename}}">
 </div>
 
-{{data}}
-
 <div style="padding-left: 15px;">
     <form action="/admin/edit/{{data.id}}" method='POST'>
-        private: {{data.private}}<br>
+        Make this image public?<br>
         <input type="radio" id="privChoice1"
          name="image_private" value="False">
         <label for="privChoice1">No</label>
@@ -67,9 +65,8 @@ Caption: <br>
     <label for="favChoice2">Yes</label>
     <br>
 
-    <button type="submit">Update</button> | <button>Public</button>
-    <hr>
-    <button>Delete</button>
+    <button type="submit">Update</button> | <button>Delete</button>
+    
 </form>
 </div>
 </div>

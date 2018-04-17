@@ -15,3 +15,4 @@ flask-wtf = "*"
 
 [dev-packages]
 
+pylint = "*"
