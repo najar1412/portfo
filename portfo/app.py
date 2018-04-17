@@ -4,9 +4,6 @@ from flask import render_template, redirect, request, session, url_for, flash
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
 from module import model
 from forms import LoginForm, RegistrationForm, UploadForm
 from config import Config
@@ -31,8 +28,10 @@ def new_image(session, filename=None, name=None, caption=None, date=None, featur
 
 
 def delete_image_from_server(filename):
-    os.remove(os.path.join(Config.UPLOAD_PATH, filename))
-    pass
+    try:
+        os.remove(os.path.join(Config.UPLOAD_PATH, filename))
+    except FileNotFoundError as e:
+        print(e)
 
 
 def delete_image(row):
