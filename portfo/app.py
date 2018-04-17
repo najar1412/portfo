@@ -18,6 +18,14 @@ login_manager.login_view = 'login'
 def load_user(id):
     return model.User.query.get(int(id))
 
+def first_time_run():
+    users = model.User.query.all()
+    if len(users) == 0:
+        return True
+
+    else:
+        return False
+
 
 def new_image(session, filename=None, name=None, caption=None, date=None, featured=False, private=True):
     image = model.Image(name=str(name), caption=str(caption), date=str(date), featured=featured, filename=str(filename), private=private)
@@ -148,7 +156,10 @@ def register():
 
         return redirect(url_for('login'))
 
-    return render_template('register.html', title='Register', form=form)
+    if first_time_run():
+        return render_template('register.html', title='Register', form=form)
+
+    return redirect(url_for('index'))
 
 
 @flaskapp.app.route('/login', methods=['GET', 'POST'])
@@ -179,13 +190,19 @@ def logout():
 
 @flaskapp.app.route('/')
 def index():
-    folio = model.Folio.query.filter_by(id=1).first()
-    session['portfo_title'] = folio.title
-    session['portfo_caption'] = folio.caption
-    
-    images = get_images(private=False)
+    if first_time_run():
+        print('its true')
 
-    return render_template('index.html', images=images)
+        return redirect('/register')
+
+    else:
+        folio = model.Folio.query.filter_by(id=1).first()
+        session['portfo_title'] = folio.title
+        session['portfo_caption'] = folio.caption
+        
+        images = get_images(private=False)
+
+        return render_template('index.html', images=images)
 
 
 @flaskapp.app.route('/admin')
