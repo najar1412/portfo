@@ -1,3 +1,7 @@
+# dev
+test.db
+test.db-journal
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
