@@ -4,8 +4,8 @@ Minimal portfolio site.
 
 [Screenshot]
 
-Features
---
+## Features
+
 
 
 *User login
