@@ -47,7 +47,7 @@ Caption: <br>
 <div style="display:flex; background-color:rgba(0, 0, 0, .1); margin-right:20px;border-radius: 25px;overflow:hidden;">
   
   <div>
-    <img style="width:300px;height:auto;" src="/static/img/{{data.filename}}">
+    <img style="width:300px;height:auto;" src="/static/uploads/{{data.filename}}">
 </div>
 
 <div style="padding-left: 15px;">
@@ -55,11 +55,11 @@ Caption: <br>
         Make this image public?<br>
         <input type="radio" id="privChoice1"
          name="image_private" value="False">
-        <label for="privChoice1">No</label>
+        <label for="privChoice1">Yes</label>
     
         <input type="radio" id="privChoice2"
          name="image_private" value="True">
-        <label for="privChoice2">Yes</label>
+        <label for="privChoice2">No</label>
         <br>
     image name <br>
     <input type=text name="image_name" placeholder="{{data.name}}"><br>
@@ -75,7 +75,7 @@ Caption: <br>
     <label for="favChoice2">Yes</label>
     <br>
 
-    <button type="submit">Update</button> | <button>Delete</button>
+    <button type="submit">Update</button> | <button name=delete_image value='True'>Delete</button>
     
 </form>
 </div>

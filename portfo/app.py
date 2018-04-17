@@ -1,48 +1,44 @@
 import os
 
-from flask import Flask, render_template, redirect, request, session, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
+from flask import render_template, redirect, request, session, url_for, flash
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 from module import model
 from forms import LoginForm, RegistrationForm, UploadForm
 from config import Config
+import flaskapp
 
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
+login_manager = LoginManager(flaskapp.app)
+login_manager.login_view = 'login'
 
-login = LoginManager(app)
-login.login_view = 'login'
 
-@login.user_loader
+@login_manager.user_loader
 def load_user(id):
     return model.User.query.get(int(id))
 
 
-def tmp_images():
-    return os.listdir('static/img')
-
-
-def new_image(Image, filename=None, name=None, caption=None, date=None, featured=False, private=True):
-    image = Image(name=str(name), caption=str(caption), date=str(date), featured=featured, filename=str(filename), private=private)
-    db.session.add(image)
-    db.session.commit()
-
+def new_image(session, filename=None, name=None, caption=None, date=None, featured=False, private=True):
+    image = model.Image(name=str(name), caption=str(caption), date=str(date), featured=featured, filename=str(filename), private=private)
+    session.add(image)
+    session.commit()
 
     return image
 
 
-def build_tmp_images(db):
-    images = tmp_images()
-    for image in images:
-        tmp_image = new_image(model.Image, filename=image, name=image, caption=f'{image}, {image}, {image}, {image}.', date='')
-        db.session.add(tmp_image)
-        db.session.commit()
+def delete_image_from_server(filename):
+    # os.remove(os.path.join(Config.UPLOAD_PATH, filename))
+    pass
 
-    return images
+
+def delete_image(row):
+    delete_image_from_server(row.filename)
+
+    return row
 
 
 def _image_to_dict(Image):
@@ -76,42 +72,53 @@ def get_images(private=None):
     return images
 
 
-def image_by_id(Image, id):
-    return Image.query.filter_by(id=id).first()
+def image_by_id(id):
+    return model.Image.query.filter_by(id=id).first()
 
 
 def folio_by_id(id):
     return model.Folio.query.filter_by(id=id).first()
 
 
-def db_edit_image(db, id, dto_image):
-    image = image_by_id(model.Image, id)
+def db_edit_image(session, id, dto_image):
+    image = model.Image.query.filter_by(id=id).first()
 
     if 'image_name' in dto_image and dto_image['image_name']:
         image.name = dto_image['image_name']
+
     if 'image_caption' in dto_image and dto_image['image_caption']:
         image.caption = dto_image['image_caption']
+
     if 'image_date' in dto_image and dto_image['image_date']:
         image.date = dto_image['image_date']
+
     if 'image_featured' in dto_image and dto_image['image_featured']:
         if dto_image['image_featured'] == 'True':
             image.featured = True
+
         elif dto_image['image_featured'] == 'False':
             image.featured = False
 
     if 'image_private' in dto_image and dto_image['image_private']:
         if dto_image['image_private'] == 'True':
             image.private = True
+
         elif dto_image['image_private'] == 'False':
             image.private = False
+
+    if 'delete_image' in dto_image and dto_image['delete_image'] == 'True':
+        session.session.delete(delete_image(image))
+        session.session.commit()
+
+        return True
     
-    db.session.commit()
+    session.session.commit()
 
 
     return image
 
 
-def db_edit_folio(db, id, dto_folio):
+def db_edit_folio(session, id, dto_folio):
     folio = folio_by_id(id)
 
     if 'folio_title' in dto_folio and dto_folio['folio_title'] and dto_folio['folio_title'] != '':
@@ -119,12 +126,12 @@ def db_edit_folio(db, id, dto_folio):
     if 'folio_caption' in dto_folio and dto_folio['folio_caption'] and dto_folio['folio_caption'] != '':
         folio.caption = dto_folio['folio_caption']
     
-    db.session.commit()
+    session.commit()
 
     return folio
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@flaskapp.app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -134,9 +141,10 @@ def register():
         user = model.User(username=form.username.data, email=form.email.data)
         folio = model.Folio(title='Portfo', caption='contact\ncontact\ncontact')
         user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.add(folio)
-        db.session.commit()
+        flaskapp.db.add(user)
+        flaskapp.db.add(folio)
+        flaskapp.db.commit()
+
         flash('Congratulations, you are now a registered user!')
 
         return redirect(url_for('login'))
@@ -144,7 +152,7 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@flaskapp.app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -163,27 +171,25 @@ def login():
     return render_template('login.html', title='Sign In', form=form)
 
 
-@app.route('/logout')
+@flaskapp.app.route('/logout')
 def logout():
     logout_user()
 
     return redirect(url_for('index'))
 
 
-@app.route('/')
+@flaskapp.app.route('/')
 def index():
-    # build_tmp_images(db)
     folio = model.Folio.query.filter_by(id=1).first()
     session['portfo_title'] = folio.title
     session['portfo_caption'] = folio.caption
     
     images = get_images(private=False)
-    # images = {}
 
     return render_template('index.html', images=images)
 
 
-@app.route('/admin')
+@flaskapp.app.route('/admin')
 @login_required
 def admin():
     form = UploadForm()
@@ -192,39 +198,34 @@ def admin():
     return render_template('admin.html', images=images, form=form)
 
 
-@app.route('/test', methods=['GET', 'POST'])
-def test():
-    print('testing test')
-    return redirect('/')
-
-
-@app.route('/upload', methods=['GET', 'POST'])
+@flaskapp.app.route('/upload', methods=['GET', 'POST'])
 def upload():
     form = UploadForm()
     if form.validate_on_submit() and 'photo' in request.files:
         for f in request.files.getlist('photo'):
             filename = secure_filename(f.filename)
             f.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+            new_image(flaskapp.db, filename=filename)
         return 'Upload completed.'
 
     return render_template('upload.html', form=form)
 
 
-@app.route('/admin/edit/<int:id>', methods=['GET', 'POST'])
+@flaskapp.app.route('/admin/edit/<int:id>', methods=['GET', 'POST'])
 def admin_edit_image(id):
     form = request.form
-    db_edit_image(db, id, form)
+    db_edit_image(flaskapp.db, id, form)
 
     return redirect('/admin')
 
 
-@app.route('/admin/edit/folio/<int:id>', methods=['GET', 'POST'])
+@flaskapp.app.route('/admin/edit/folio/<int:id>', methods=['GET', 'POST'])
 def admin_edit_folio(id):
     form = request.form
-    db_edit_folio(db, id, form)
+    db_edit_folio(flaskapp.db, id, form)
 
     return redirect('/admin')
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    flaskapp.app.run(debug=True)
