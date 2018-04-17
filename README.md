@@ -10,9 +10,9 @@ Minimal portfolio site.
 
 * User login
 
-Full design/layout customization
+* Full design/layout customization
 
-Portfolio item management
+* Portfolio item management
 
 ## Installation
 
