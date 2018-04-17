@@ -8,6 +8,6 @@ Features
 --
 
 
-User login
-Full design/layout customization
-Portfolio item management
+*User login
+*Full design/layout customization
+*Portfolio item management
