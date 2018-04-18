@@ -1,7 +1,14 @@
+"""
+Contains all os, and database interaction
+"""
 import os
+
+from flask import session
+from werkzeug.utils import secure_filename
 
 from module import model
 from config import Config
+
 
 class ManageImage():
     def __init__(self, db_session=None):
@@ -142,9 +149,17 @@ class ManageImage():
         return images
 
 
+    def upload_images(self, images):
+        for x in images:
+            filename = secure_filename(x.filename)
+            x.save(os.path.join(Config.UPLOAD_PATH, filename))
+            self.new(filename=filename)
+
+
 class ManageFolio():
     def __init__(self, db_session=None):
         self.db_session = db_session
+
 
     def new(self):
         """creates a new folio object in the database
@@ -165,7 +180,7 @@ class ManageFolio():
         return model.Folio.query.filter_by(id=id).first()
 
 
-    def edit(self, flask_session, id, dto_folio):
+    def edit(self, session, id, dto_folio):
         """handles editing of sqlalchemy Folio object
         id: int, id of object to edit
         dto_folio: dict, edits to make
@@ -183,20 +198,90 @@ class ManageFolio():
         if 'folio_title_enable' in dto_folio and dto_folio['folio_title_enable'] == 'True':
             if folio.enable_title == False:
                 folio.enable_title = True
-                flask_session['portfo_title_enable'] = True
+                session['portfo_title_enable'] = True
             else:
                 folio.enable_title = False
-                flask_session['portfo_title_enable'] = False
+                session['portfo_title_enable'] = False
             
 
         if 'folio_caption_enable' in dto_folio and dto_folio['folio_caption_enable'] == 'True':
             if folio.enable_caption == False:
                 folio.enable_caption = True
-                flask_session['portfo_caption_enable'] = True
+                session['portfo_caption_enable'] = True
             else:
                 folio.enable_caption = False
-                flask_session['portfo_caption_enable'] = False
+                session['portfo_caption_enable'] = False
         
         self.db_session.session.commit()
 
         return folio
+
+
+class CookieMonster():
+    def __init__(self, cookie):
+        self.cookie = cookie
+
+
+    def new(self):
+        # TODO: build new portfo cookie
+        self.destroy()
+
+        folio = ManageFolio().get_by_id(id=1)
+
+        clean_session = session
+        clean_session['portfo_title'] = folio.title
+        clean_session['portfo_caption'] = folio.caption
+        clean_session['portfo_title_enable'] = folio.enable_title
+        clean_session['portfo_caption_enable'] = folio.enable_caption
+
+
+        return clean_session
+
+
+    def destroy(self):
+        try:
+            self.cookie.pop('portfo_title', None)
+            self.cookie.pop('portfo_caption', None)
+            self.cookie.pop('portfo_title_enable', None)
+            self.cookie.pop('portfo_caption_enable', None)
+        except:
+            pass
+
+
+class ManageUser():
+    def __init__(self, db_session=None):
+        self.db_session = db_session
+
+
+    def get_by_id(self, id):
+        return model.User.query.get(int(id))
+
+
+    def get_by_username(self, username):
+        return model.User.query.filter_by(username=username).first()
+
+
+    def get_by_email(self, email):
+        return model.User.query.filter_by(email=email).first()
+
+
+    def get_all(self):
+        return model.User.query.all()
+
+
+    def new(self, username, email, password):
+        user = model.User(username=username, email=email)
+        user.set_password(password)
+        
+        self.db_session.session.add(user)
+        self.db_session.session.commit()
+
+        return user
+
+
+    def validate(self, username, password):
+        user = self.get_by_username(username)
+        if user is None or not user.check_password(password):
+            return False
+        
+        return user

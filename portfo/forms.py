@@ -1,9 +1,13 @@
+"""
+Contains all form code
+"""
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 
-from module import model
+from module.utilities import ManageUser
 
 
 class LoginForm(FlaskForm):
@@ -23,13 +27,13 @@ class RegistrationForm(FlaskForm):
 
 
     def validate_username(self, username):
-        user = model.User.query.filter_by(username=username.data).first()
+        user = ManageUser().get_by_username(username.data)
         if user is not None:
             raise ValidationError('Please use a different username.')
 
 
     def validate_email(self, email):
-        user = model.User.query.filter_by(email=email.data).first()
+        user = ManageUser().get_by_email(email.data)
         if user is not None:
             raise ValidationError('Please use a different email address.')
 
