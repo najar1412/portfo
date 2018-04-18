@@ -117,6 +117,7 @@ def admin_edit_image(id):
 def admin_edit_folio(id):
     form = request.form
     ManageFolio(app.db).edit(session, id, form)
+    CookieMonster(session).update()
 
     return redirect('/admin')
 

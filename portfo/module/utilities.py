@@ -217,37 +217,6 @@ class ManageFolio():
         return folio
 
 
-class CookieMonster():
-    def __init__(self, cookie):
-        self.cookie = cookie
-
-
-    def new(self):
-        # TODO: build new portfo cookie
-        self.destroy()
-
-        folio = ManageFolio().get_by_id(id=1)
-
-        clean_session = session
-        clean_session['portfo_title'] = folio.title
-        clean_session['portfo_caption'] = folio.caption
-        clean_session['portfo_title_enable'] = folio.enable_title
-        clean_session['portfo_caption_enable'] = folio.enable_caption
-
-
-        return clean_session
-
-
-    def destroy(self):
-        try:
-            self.cookie.pop('portfo_title', None)
-            self.cookie.pop('portfo_caption', None)
-            self.cookie.pop('portfo_title_enable', None)
-            self.cookie.pop('portfo_caption_enable', None)
-        except:
-            pass
-
-
 class ManageUser():
     def __init__(self, db_session=None):
         self.db_session = db_session
@@ -285,3 +254,38 @@ class ManageUser():
             return False
         
         return user
+
+
+class CookieMonster():
+    def __init__(self, cookie):
+        self.cookie = cookie
+
+
+    def new(self):
+        # TODO: build new portfo cookie
+        self.destroy()
+        self.update()
+
+        return session
+
+
+    def destroy(self):
+        try:
+            self.cookie.pop('portfo_title', None)
+            self.cookie.pop('portfo_caption', None)
+            self.cookie.pop('portfo_title_enable', None)
+            self.cookie.pop('portfo_caption_enable', None)
+        except:
+            pass
+
+
+    def update(self):
+        folio = ManageFolio().get_by_id(id=1)
+
+        session['portfo_title'] = folio.title
+        session['portfo_caption'] = folio.caption
+        session['portfo_title_enable'] = folio.enable_title
+        session['portfo_caption_enable'] = folio.enable_caption
+
+        return session
+
