@@ -6,7 +6,7 @@
   {% if session.portfo_caption_enable == True %}
    <div style="position:absolute;z-index:90;top:130px;background: rgba(255, 255, 255, .6);margin:auto; padding-right: 30px; padding-left:30px; padding-top:15px;padding-bottom:15px; margin:20px;">
      <small>  
-     {{session.portfo_caption}}
+     {{session.portfo_caption|safe}}
      </small>
    </div>
    {% endif %}

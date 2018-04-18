@@ -203,11 +203,11 @@ class ManageFolio():
                 folio.enable_title = False
                 session['portfo_title_enable'] = False
             
-
         if 'folio_caption_enable' in dto_folio and dto_folio['folio_caption_enable'] == 'True':
             if folio.enable_caption == False:
                 folio.enable_caption = True
                 session['portfo_caption_enable'] = True
+
             else:
                 folio.enable_caption = False
                 session['portfo_caption_enable'] = False
@@ -259,6 +259,10 @@ class ManageUser():
 class CookieMonster():
     def __init__(self, cookie):
         self.cookie = cookie
+
+
+    def _process_caption(self, obj):
+        return bytes(obj.caption, "utf-8").decode("unicode_escape")
 
 
     def new(self):

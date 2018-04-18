@@ -15,9 +15,15 @@
 
    <p style="height:60px;"></p>
    
+
+   <div class="alert alert-danger" role="alert">
+        Theres alot of fluff on this page that doesnt work. All core functionality should work - including, changing and toggling site headers and uploading images. Things start to break when using some of the other image management tools.
+      </div>
+      <p style="height:30px;"></p>
    <h1 class="display-6">
         Global Settings
    </h1>
+   <br>
 
   <div class="card">
     <div class="card-body">
@@ -35,10 +41,18 @@ Title: <br>
 <div style="display: inline-block">
 Caption: <br>
 <input type=text name="folio_caption" placeholder="{{session.portfo_caption}}">&emsp;&emsp;
-
-
 <input type="checkbox" class="form-check-input" name="folio_caption_enable" value="True" id="exampleCheck1">
 <label class="form-check-label" for="exampleCheck1">Enable Site Caption?</label>
+<br>
+<br>
+
+
+<div class="alert alert-info" role="alert">
+    <strong>note:</strong> html can, and should be used in the caption field.<br>
+To have multiple lines use '&lt;br&gt;' without quotes, which will put the following text on a new line.<br>
+Bold can be achieved by surrounding the text with '&lt;strong&gt;some text&lt;/strong&gt;', again without quotes.
+  </div>
+
 
 <br>
 <br>
@@ -53,10 +67,17 @@ Caption: <br>
 <h1 class="display-6">
     Upload Images
 </h1>
+<br>
 
+<hr>
 
    <div class="card">
     <div class="card-body">
+
+            <div class="alert alert-info" role="alert">
+                    <strong>note:</strong> There are two stages to uploading images. The first is... uploading an image. Once that is done, the image will appear in the Private Images section of the admin page. For the image to be visiable to the world, you must select the 'Yes' checkbox under the header 'Do you want to make this image private?'.
+                  </div>
+
         <form action="/upload" method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             {{ form.photo(multiple="multiple") }}
@@ -65,11 +86,12 @@ Caption: <br>
     </div>
   </div>
 
+
   <p style="height:30px;"></p>
 
 
-<p style="height:40px;"></p>
-
+<hr>
+<p style="height:30px;"></p>
 <div style="display:flex;">
 
 

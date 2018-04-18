@@ -10,6 +10,8 @@ import app
 from forms import LoginForm, RegistrationForm, UploadForm
 from module.utilities import ManageImage, ManageFolio, CookieMonster, ManageUser
 
+from module import model
+
 
 # helpers
 @app.login_manager.user_loader
