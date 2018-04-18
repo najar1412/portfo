@@ -3,7 +3,7 @@ Contains all database models
 """
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from flaskapp import db
+from app import db
 
 
 class User(db.Model):
