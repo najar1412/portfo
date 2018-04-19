@@ -58,7 +58,7 @@ class Image(db.Model):
 class Folio(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(), default="portfo v0.1.0")
-    caption = db.Column(db.String(), default="<strong>@twitterUser</strong><br>@instagramUser<br>email@email.com")
+    caption = db.Column(db.String(), default="<strong>email@email.com</strong><br>@instagramUser<br>@twitterUser")
     enable_title = db.Column(db.Boolean(), default=True)
     enable_caption = db.Column(db.Boolean(), default=True)
 
