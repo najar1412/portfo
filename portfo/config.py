@@ -1,5 +1,5 @@
 """
-Contains required config for running portfo
+Contains all web app config
 """
 
 # TODO: imp production AND dev config

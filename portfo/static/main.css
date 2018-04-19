@@ -34,11 +34,11 @@ html { overflow-y: scroll; }
   /* Styles the thumbnail */
   
   a.lightbox img {
-    transition: opacity .5s;
-    opacity: .9;
+    transition: .5s;
+    filter: saturate(1) grayscale(.2);
   }
   a.lightbox img:hover {
-    opacity: 1;
+    filter:  saturate(1.5) grayscale(0);
   }
   
 
@@ -70,8 +70,8 @@ html { overflow-y: scroll; }
 /* Toggle this class - hide and show the popup */
 .popup .show {
   visibility: visible;
-  -webkit-animation: fadeIn 0.5s;
-  animation: fadeIn 0.5s;
+  -webkit-animation: fadeIn 0.2s;
+  animation: fadeIn 0.2s;
 }
 
 /* Add animation (fade in the popup) */
