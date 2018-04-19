@@ -8,9 +8,38 @@
 
 {% for id, data in images.items() %}
 <div class="grid-item">
-  <a class="lightbox" href="#">
-  <img src="static/uploads/{{data.filename}}"/>
-</a>
+
+  
+
+    <div class="popup" onclick="myFunction('{{data.filename}}')">
+        <a class="lightbox" href="#">
+        <img src="static/uploads/{{data.filename}}"/>
+      </a>
+    
+    
+        <span class="popuptext" id="{{data.filename}}">
+
+
+
+            <div style="position: absolute; left: 25%;">
+                <div style="position: relative; left: -25%;">
+            
+                <img src="static/uploads/{{data.filename}}"/>
+          </div>
+          </div>
+
+
+
+        </span>
+    
+    
+    
+      </div>
+
+
+
+
+
 </div>
 
 {% endfor %}
@@ -19,6 +48,8 @@
 
 <hr>
 
+
+  
 
 
 
