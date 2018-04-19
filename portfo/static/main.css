@@ -27,3 +27,18 @@ html { overflow-y: scroll; }
   display: block;
   max-width: 100%;
 }
+
+
+
+  
+  /* Styles the thumbnail */
+  
+  a.lightbox img {
+    transition: opacity .5s;
+    opacity: .9;
+  }
+  a.lightbox img:hover {
+    opacity: 1;
+  }
+  
+
