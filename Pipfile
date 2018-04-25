@@ -13,6 +13,7 @@ flask-login = "*"
 flask-wtf = "*"
 flask-sqlalchemy-session = "*"
 pytest = "*"
+gunicorn = "*"
 
 
 [dev-packages]
