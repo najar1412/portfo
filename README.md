@@ -3,6 +3,7 @@
 Minimal portfolio site.
 
 [Screenshot]
+![Portfo Screenshot](./portfo/static/site/readme_cover.jpg "Software Screenshot")
 
 ## Features
 

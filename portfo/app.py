@@ -108,7 +108,7 @@ def upload():
 @config.app.route('/admin/edit/<int:id>', methods=['GET', 'POST'])
 def admin_edit_image(id):
     form = request.form
-    ManageImage(app.db).edit(id, form)
+    ManageImage(config.db).edit(id, form)
 
     return redirect('/admin')
 

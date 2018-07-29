@@ -3,6 +3,11 @@
 
 {% include 'header.html' %}
 
+{% if images|length < 1 %}
+<p style="height: 200px;"></p>
+No Media Iploaded. Please Login to Upload Media.
+{% else %}
+
 <div class="grid">
 <div class="grid-sizer"></div>
 
@@ -43,6 +48,10 @@
 </div>
 
 <hr>
+
+{% endif %}
+
+
 
 
   
