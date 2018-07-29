@@ -1,6 +1,7 @@
 # dev
 test.db
 test.db-journal
+uploads/*.jpg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
