@@ -99,6 +99,10 @@ Bold can be achieved by surrounding the text with '&lt;strong&gt;some text&lt;/s
         <div style="width:50%;">
                 <h2 class="display-4">Private Images</h2>
   <br>
+
+  <a class="btn btn-primary" href="/admin/public_all" role="button">Make All Public</a>
+  <br><br>
+
 {% for id, data in images.items() %}
 {% if data.private == True %}
 
@@ -147,6 +151,11 @@ Bold can be achieved by surrounding the text with '&lt;strong&gt;some text&lt;/s
 <div style="width:50%;">
         <h2 class="display-4">Public Images</h2>
     <br>
+
+    <a class="btn btn-primary" href="/admin/private_all" role="button">Make All Private</a>
+    <br><br>
+
+
         {% for id, data in images.items() %}
         {% if data.private == False %}
         

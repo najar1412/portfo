@@ -128,6 +128,22 @@ class ManageImage():
         return image
 
 
+    def public_all(self):
+        private_media = model.Image.query.filter_by(private=True)
+        for media in private_media:
+            media.private = False
+        
+        self.db_session.session.commit()
+
+
+    def private_all(self):
+        public_media = model.Image.query.filter_by(private=False)
+        for media in public_media:
+            media.private = True
+        
+        self.db_session.session.commit()
+
+
     def get_all(self, private=None):
         """retrieves all image objs from database
         private: boolean, filters results

@@ -5,7 +5,7 @@
 
 {% if images|length < 1 %}
 <p style="height: 200px;"></p>
-No Media Iploaded. Please Login to Upload Media.
+No Media Uploaded. Please Login to Upload Media.
 {% else %}
 
 <div class="grid">
@@ -22,18 +22,19 @@ No Media Iploaded. Please Login to Upload Media.
       </a>
     
     
-        <span class="popuptext" id="{{data.filename}}">
+        <div class="popuptext" id="{{data.filename}}">
 
-            <div style="display: inline-block;position: relative;left: 50%;-webkit-transform: translateX(-50%);transform: translateX(-50%)">
+          <!-- add media caption here somehere-->
+
 
                 <img src="static/uploads/{{data.filename}}"/>
-          </div>
+  
 
 
 
-        </span>
+        </div>
     
-    
+        
     
       </div>
 

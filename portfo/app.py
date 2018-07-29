@@ -113,6 +113,20 @@ def admin_edit_image(id):
     return redirect('/admin')
 
 
+@config.app.route('/admin/public_all', methods=['GET', 'POST'])
+def admin_public_all():
+    ManageImage(config.db).public_all()
+
+    return redirect('/admin')
+
+
+@config.app.route('/admin/private_all', methods=['GET', 'POST'])
+def admin_private_all():
+    ManageImage(config.db).private_all()
+
+    return redirect('/admin')
+
+
 @config.app.route('/admin/edit/folio/<int:id>', methods=['GET', 'POST'])
 def admin_edit_folio(id):
     form = request.form
